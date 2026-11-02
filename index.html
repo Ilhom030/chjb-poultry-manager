@@ -65,20 +65,20 @@
 
     // Сервердан келадиган жавобни қабул қилиш
     window.addEventListener("message", function(event) {
-      if (event.source !== authFrame.contentWindow) return;
-
+      if (!event.origin.endsWith(".googleusercontent.com")) return;
+    
       if (!event.data || event.data.type !== "CHJB_AUTH_RESULT") {
         return;
       }
-
+    
       const result = event.data.data;
-
+    
       if (result && result.success === false) {
         showStatus("Авторизацияда хатолик!");
       } else {
         showStatus("Сервердан жавоб қабул қилинди.");
       }
-
+    
       detailsBox.textContent = JSON.stringify(result, null, 2);
     });
 
