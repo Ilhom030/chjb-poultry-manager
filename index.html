@@ -3,294 +3,112 @@
 <html lang="uz">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0">
-
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>CHJB POULTRY MANAGER</title>
 
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
     body {
       margin: 0;
-      padding: 20px;
+      padding: 24px;
       font-family: Arial, sans-serif;
       background: #f2f5f3;
-      color: #173c2c;
+      color: #20352a;
     }
-
-    .container {
+    .card {
       max-width: 480px;
-      margin: 35px auto;
+      margin: 30px auto;
+      padding: 24px;
       background: white;
-      border-radius: 18px;
-      padding: 25px 20px;
-      box-shadow: 0 5px 25px rgba(0,0,0,.07);
+      border-radius: 14px;
       text-align: center;
+      box-shadow: 0 3px 15px #0001;
     }
-
-    .logo {
-      width: 76px;
-      height: 76px;
-      margin: 0 auto 15px;
-      border-radius: 50%;
-      background: #174d35;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 25px;
-      font-weight: bold;
-    }
-
-    h1 {
-      font-size: 22px;
-      margin: 10px 0;
-      color: #174d35;
-    }
-
-    .subtitle {
-      color: #66756c;
-      font-size: 14px;
-      margin-bottom: 25px;
-    }
-
-    .status {
-      padding: 14px;
-      border-radius: 10px;
-      background: #edf4ef;
-      font-size: 14px;
-      line-height: 1.6;
-      overflow-wrap: anywhere;
-    }
-
-    .error {
-      background: #fff0f0;
-      color: #b42318;
-    }
-
-    .success {
-      background: #e8f6ed;
-      color: #176b39;
-    }
-
-    .info {
-      margin-top: 18px;
+    h2 { margin-bottom: 8px; }
+    #status { margin-top: 20px; }
+    pre {
       text-align: left;
-      font-size: 12px;
-      color: #66756c;
-      line-height: 1.8;
+      white-space: pre-wrap;
       overflow-wrap: anywhere;
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    button {
-      width: 100%;
-      border: none;
-      background: #174d35;
-      color: white;
-      padding: 14px;
-      border-radius: 10px;
-      font-size: 15px;
-      margin-top: 18px;
-      cursor: pointer;
-    }
-
-    button:disabled {
-      opacity: .5;
+      font-size: 13px;
     }
   </style>
 </head>
 
 <body>
-
-<div class="container">
-
-  <div class="logo">CHJB</div>
-
-  <h1>CHJB POULTRY MANAGER</h1>
-
-  <div class="subtitle">
-    Паррандачилик бошқарув тизими
+  <div class="card">
+    <h2>CHJB POULTRY MANAGER</h2>
+    <p>Паррандачилик бошқарув тизими</p>
+    <div id="status">Telegram маълумотлари текширилмоқда...</div>
+    <pre id="details"></pre>
   </div>
 
-  <div id="status" class="status">
-    Telegram орқали кириш текширилмоқда...
-  </div>
+  <iframe name="chjbAuthFrame" id="chjbAuthFrame"
+          style="display:none"></iframe>
 
-  <div id="userInfo" class="status success hidden"></div>
+  <form id="authForm"
+        method="POST"
+        target="chjbAuthFrame"
+        action="https://script.google.com/macros/s/AKfycbxI1OBSF1AVEx3lFcwf7C2iO_ahHuLJ85LRFhWQiR2NoUdxKv8iN1jEHw7TyYsZt9hK/exec">
+    <input type="hidden" name="initData" id="initData">
+  </form>
 
-  <button id="retryButton" class="hidden"
-          onclick="startAuthorization()">
-    Қайта уриниш
-  </button>
+  <script>
+    const statusBox = document.getElementById("status");
+    const detailsBox = document.getElementById("details");
+    const authFrame = document.getElementById("chjbAuthFrame");
 
-  <div class="info" id="diagnostics"></div>
-
-</div>
-
-<script>
-(function () {
-  "use strict";
-
-  // GOOGLE APPS SCRIPT WEB APP МАНЗИЛИ
-  const API_URL =
-    "https://script.google.com/macros/s/AKfycbxI1OBSF1AVEx3lFcwf7C2iO_ahHuLJ85LRFhWQiR2NoUdxKv8iN1jEHw7TyYsZt9hK/exec";
-
-  const tg = window.Telegram
-    ? window.Telegram.WebApp
-    : null;
-
-  const statusBox = document.getElementById("status");
-  const diagnostics = document.getElementById("diagnostics");
-  const userInfo = document.getElementById("userInfo");
-  const retryButton = document.getElementById("retryButton");
-
-  function showStatus(message, type) {
-    statusBox.textContent = message;
-    statusBox.className = "status";
-
-    if (type) {
-      statusBox.classList.add(type);
-    }
-  }
-
-  function showDiagnostics() {
-    const initData = tg ? tg.initData : "";
-
-    diagnostics.innerHTML = `
-      HOST: ${location.hostname}<br>
-      Telegram SDK: ${tg ? "ЮКЛАНДИ" : "ЮКЛАНМАДИ"}<br>
-      Platform: ${tg ? tg.platform : "unknown"}<br>
-      Version: ${tg ? tg.version : "unknown"}<br>
-      InitData узунлиги: ${initData.length}<br>
-      URL hash: ${location.hash ? "Мавжуд" : "ЙЎҚ"}
-    `;
-  }
-
-  function startAuthorization() {
-    retryButton.classList.add("hidden");
-    userInfo.classList.add("hidden");
-
-    if (!tg) {
-      showStatus(
-        "Telegram SDK юкланмади. Интернет алоқасини текширинг.",
-        "error"
-      );
-      retryButton.classList.remove("hidden");
-      return;
+    function showStatus(message) {
+      statusBox.textContent = message;
     }
 
-    tg.ready();
-    tg.expand();
+    // Сервердан келадиган жавобни қабул қилиш
+    window.addEventListener("message", function(event) {
+      if (event.source !== authFrame.contentWindow) return;
 
-    showDiagnostics();
-
-    const initData = tg.initData;
-
-    if (!initData) {
-      showStatus(
-        "Telegram маълумоти келмади. Илтимос, бот орқали очинг.",
-        "error"
-      );
-      retryButton.classList.remove("hidden");
-      return;
-    }
-
-    showStatus(
-      "Фойдаланувчи маълумотлари серверда текширилмоқда..."
-    );
-
-    // Сервер билан JSONP орқали алоқа
-    const callbackName =
-      "chjbAuthCallback_" + Date.now();
-
-    const script = document.createElement("script");
-
-    const timeout = setTimeout(function () {
-      cleanup();
-
-      showStatus(
-        "Сервердан жавоб келмади. Кейинроқ қайта урининг.",
-        "error"
-      );
-
-      retryButton.classList.remove("hidden");
-    }, 20000);
-
-    function cleanup() {
-      clearTimeout(timeout);
-      delete window[callbackName];
-
-      if (script.parentNode) {
-        script.parentNode.removeChild(script);
+      if (!event.data || event.data.type !== "CHJB_AUTH_RESULT") {
+        return;
       }
-    }
 
-    window[callbackName] = function (result) {
-      cleanup();
+      const result = event.data.data;
 
-      if (result && result.ok) {
-        showStatus(
-          "Авторизация муваффақиятли!",
-          "success"
-        );
-
-        const user = result.user || {};
-
-        userInfo.classList.remove("hidden");
-
-        userInfo.textContent =
-          "Фойдаланувчи: " + (user.fullName || "") +
-          " | Лавозим: " + (user.role || "") +
-          " | Цех: " + (user.workshopId || "");
-
+      if (result && result.success === false) {
+        showStatus("Авторизацияда хатолик!");
       } else {
-        showStatus(
-          result && result.message
-            ? result.message
-            : "Авторизация амалга ошмади.",
-          "error"
-        );
-
-        retryButton.classList.remove("hidden");
+        showStatus("Сервердан жавоб қабул қилинди.");
       }
-    };
 
-    const params = new URLSearchParams();
+      detailsBox.textContent = JSON.stringify(result, null, 2);
+    });
 
-    params.set("action", "auth");
-    params.set("initData", initData);
-    params.set("callback", callbackName);
+    // Telegram маълумотларини олиш
+    window.addEventListener("load", function() {
+      const tg = window.Telegram && window.Telegram.WebApp;
 
-    script.src = API_URL + "?" + params.toString();
+      if (!tg) {
+        showStatus("Telegram SDK юкланмади.");
+        return;
+      }
 
-    script.onerror = function () {
-      cleanup();
+      tg.ready();
+      tg.expand();
 
-      showStatus(
-        "Серверга уланишда хатолик юз берди.",
-        "error"
-      );
+      const initData = tg.initData || "";
 
-      retryButton.classList.remove("hidden");
-    };
+      if (!initData) {
+        showStatus("Telegram маълумоти топилмади. Илтимос, бот орқали очинг.");
+        detailsBox.textContent =
+          "Platform: " + (tg.platform || "unknown") +
+          "\nInitData узунлиги: 0";
+        return;
+      }
 
-    document.body.appendChild(script);
-  }
+      document.getElementById("initData").value = initData;
+      showStatus("Telegram маълумотлари серверга юборилмоқда...");
 
-  startAuthorization();
-
-})();
-</script>
-
+      document.getElementById("authForm").submit();
+    });
+  </script>
 </body>
 </html>
-
