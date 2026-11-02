@@ -107,7 +107,21 @@
       document.getElementById("initData").value = initData;
       showStatus("Telegram маълумотлари серверга юборилмоқда...");
 
-      document.getElementById("authForm").submit();
+      const form = document.getElementById("authForm");
+
+showStatus("1. Telegram маълумоти тайёрланди. Серверга POST юборилмоқда...");
+
+authFrame.onload = function() {
+  showStatus("2. Сервер жавоби iframe'га юкланди. postMessage кутилмоқда...");
+};
+
+form.submit();
+
+setTimeout(function() {
+  if (statusBox.textContent.includes("POST юборилмоқда")) {
+    showStatus("ХАТО: сервердан жавоб юкланмади. POST сўрови ёки сервер манзилини текшириш керак.");
+  }
+}, 15000);
     });
   </script>
 </body>
