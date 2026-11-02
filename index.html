@@ -73,15 +73,15 @@
     
       const result = event.data.data;
     
-      if (result && result.success === false) {
-        showStatus("Авторизацияда хатолик!");
+      if (result && result.ok === true) {
+        showStatus("Муваффақиятли авторизация!");
       } else {
-        showStatus("Сервердан жавоб қабул қилинди.");
+        showStatus("Авторизация хатоси: " +
+          (result.message || "Номаълум хатолик"));
       }
     
       detailsBox.textContent = JSON.stringify(result, null, 2);
     });
-
     // Telegram маълумотларини олиш
     window.addEventListener("load", function() {
       const tg = window.Telegram && window.Telegram.WebApp;
