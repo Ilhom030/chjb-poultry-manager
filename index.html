@@ -2,484 +2,793 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#176b45">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="theme-color" content="#dceaff">
 
-  <title>CHJB POULTRY MANAGER</title>
+<title>CHJB POULTRY MANAGER</title>
 
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<style>
+*{box-sizing:border-box}
 
-    body {
-      margin: 0;
-      padding: 16px;
-      font-family: Arial, sans-serif;
-      background: #f1f5f2;
-      color: #20352a;
-    }
+body{
+ margin:0;
+ font-family:Arial,sans-serif;
+ color:#102b5c;
+ background:linear-gradient(145deg,#edf4ff,#d8e8ff,#f4f7ff);
+ padding:15px 15px 105px;
+}
 
-    .container {
-      max-width: 650px;
-      margin: auto;
-    }
+button{font-family:inherit;cursor:pointer}
 
-    .card {
-      background: white;
-      padding: 24px;
-      border-radius: 16px;
-      box-shadow: 0 3px 15px #0001;
-      margin-top: 20px;
-    }
+.app{max-width:650px;margin:auto}
 
-    .header {
-      text-align: center;
-      background: #176b45;
-      color: white;
-      padding: 25px 15px;
-      border-radius: 16px;
-    }
+.header{
+ display:flex;
+ align-items:center;
+ gap:12px;
+ padding:12px 5px 22px;
+}
 
-    .header h2 {
-      margin: 0 0 8px;
-    }
+.logo{
+ width:82px;
+ height:82px;
+ object-fit:contain;
+ border-radius:50%;
+ mix-blend-mode:multiply;
+}
 
-    .header p {
-      margin: 0;
-      opacity: .9;
-    }
+.brand{flex:1;min-width:0}
 
-    #status {
-      text-align: center;
-      padding: 20px 5px;
-      font-size: 15px;
-    }
+.brand h2{
+ font-size:19px;
+ margin:0 0 7px;
+ font-weight:800;
+}
 
-    .menu {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      margin-top: 20px;
-    }
+.brand p{
+ margin:0;
+ color:#536f9d;
+ font-size:13px;
+}
 
-    .menu-item {
-      background: white;
-      border: 1px solid #e2eae4;
-      border-radius: 14px;
-      padding: 18px 10px;
-      text-align: center;
-      cursor: pointer;
-      min-height: 105px;
-      box-shadow: 0 2px 8px #00008;
-      color: #20352a;
-      font-size: 14px;
-      font-weight: bold;
-    }
+.icon-button{
+ border:0;
+ background:white;
+ border-radius:50%;
+ width:45px;
+ height:45px;
+ font-size:21px;
+ color:#173c78;
+ box-shadow:0 5px 15px #537db522;
+}
 
-    .menu-item:active {
-      background: #e4f2e9;
-      transform: scale(.98);
-    }
+.hero{
+ background:linear-gradient(115deg,#0879f9,#0051d9);
+ color:white;
+ border-radius:28px;
+ padding:25px 22px;
+ min-height:190px;
+ position:relative;
+ overflow:hidden;
+ box-shadow:0 12px 25px #1265df35;
+}
 
-    .menu-item .emoji {
-      display: block;
-      font-size: 29px;
-      margin-bottom: 10px;
-    }
+.hero:after{
+ content:"🐔";
+ position:absolute;
+ right:20px;
+ top:30px;
+ font-size:105px;
+ opacity:.18;
+}
 
-    .hidden {
-      display: none !important;
-    }
+.hero-title{font-size:21px;font-weight:bold}
 
-    .section-title {
-      text-align: center;
-      margin-bottom: 20px;
-    }
+.hero-number{
+ font-size:65px;
+ font-weight:800;
+ margin:8px 0;
+}
 
-    .back-btn {
-      width: 100%;
-      border: none;
-      padding: 14px;
-      background: #176b45;
-      color: white;
-      border-radius: 10px;
-      font-size: 16px;
-      cursor: pointer;
-      margin-top: 20px;
-    }
+.hero-bottom{
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ gap:10px;
+ border-top:1px solid #ffffff55;
+ padding-top:13px;
+ font-size:14px;
+}
 
-    .user-info {
-      text-align: center;
-      font-size: 13px;
-      color: #d9f3e3;
-      margin-top: 12px;
-    }
+.detail-btn{
+ background:#ffffff35;
+ border:0;
+ color:white;
+ padding:11px 15px;
+ border-radius:30px;
+ font-size:14px;
+}
 
-    .footer {
-      text-align: center;
-      color: #809087;
-      font-size: 12px;
-      margin: 25px 0 10px;
-    }
+.workshop{
+ display:flex;
+ align-items:center;
+ background:white;
+ border-radius:23px;
+ padding:16px;
+ margin-top:20px;
+ box-shadow:0 7px 18px #557bb51c;
+ gap:14px;
+ border:0;
+ width:100%;
+ text-align:left;
+ color:#102b5c;
+}
 
-    @media (max-width: 350px) {
-      .menu {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
+.workshop-icon{
+ width:66px;height:66px;
+ display:grid;place-items:center;
+ background:#e4f1ff;
+ border-radius:20px;
+ font-size:36px;
+}
+
+.workshop-info{flex:1}
+.workshop-info strong{font-size:18px}
+.workshop-info p{
+ margin:5px 0 0;
+ color:#7189b3;
+ font-size:13px;
+}
+
+.arrow{font-size:28px;color:#6680a9}
+
+.section-heading{
+ font-size:20px;
+ font-weight:800;
+ margin:25px 5px 13px;
+}
+
+.quick{
+ display:grid;
+ grid-template-columns:repeat(4,1fr);
+ gap:9px;
+}
+
+.quick-item{
+ background:white;
+ border:0;
+ border-radius:23px;
+ padding:16px 3px;
+ min-height:105px;
+ color:#102b5c;
+ box-shadow:0 6px 15px #557bb51c;
+}
+
+.quick-item .emoji{
+ display:block;
+ font-size:34px;
+ margin-bottom:8px;
+}
+
+.quick-item span:last-child{
+ font-size:13px;
+ font-weight:bold;
+}
+
+.management{
+ display:grid;
+ grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:9px;
+}
+
+.manage-item{
+ display:flex;
+ align-items:center;
+ gap:10px;
+ padding:13px 10px;
+ min-height:65px;
+ background:white;
+ border:0;
+ border-radius:22px;
+ color:#102b5c;
+ box-shadow:0 5px 14px #557bb51c;
+ text-align:left;
+}
+
+.manage-item .emoji{
+ font-size:29px;
+ min-width:40px;
+ text-align:center;
+}
+
+.manage-item strong{
+ font-size:13px;
+ flex:1;
+}
+
+.manage-item .arrow{font-size:23px}
+
+.page{display:none}
+.page.active{display:block}
+
+.bottom-nav{
+ position:fixed;
+ bottom:0;
+ left:0;
+ right:0;
+ z-index:10;
+ max-width:650px;
+ margin:auto;
+ background:#ffffffed;
+ backdrop-filter:blur(12px);
+ border-radius:28px 28px 0 0;
+ display:grid;
+ grid-template-columns:repeat(4,1fr);
+ padding:13px 5px 10px;
+ box-shadow:0 -5px 20px #476fa522;
+}
+
+.nav-item{
+ border:0;
+ background:transparent;
+ color:#7589ac;
+ font-size:12px;
+ font-weight:bold;
+ display:flex;
+ flex-direction:column;
+ align-items:center;
+ gap:5px;
+}
+
+.nav-item .nav-icon{font-size:24px}
+
+.nav-item.active{color:#0868f5}
+
+.nav-item.active:after{
+ content:"";
+ width:75%;
+ height:3px;
+ border-radius:5px;
+ background:#0875ff;
+ margin-top:4px;
+}
+
+.page-title{
+ font-size:23px;
+ font-weight:bold;
+ margin:15px 5px;
+}
+
+.panel{
+ background:white;
+ border-radius:22px;
+ padding:18px;
+ margin-bottom:12px;
+ box-shadow:0 5px 15px #557bb51c;
+}
+
+.panel button{
+ border:0;
+ background:#e9f2ff;
+ padding:13px;
+ border-radius:12px;
+ color:#1459ae;
+ font-weight:bold;
+}
+
+.back{
+ border:0;
+ background:#0875ef;
+ color:white;
+ border-radius:12px;
+ padding:13px 20px;
+ margin-top:15px;
+}
+
+input{
+ width:100%;
+ padding:12px;
+ border:1px solid #dce6f5;
+ border-radius:12px;
+ margin-top:8px;
+}
+
+#loginScreen{
+ max-width:480px;
+ margin:60px auto;
+ background:white;
+ border-radius:25px;
+ padding:25px;
+ text-align:center;
+}
+
+#status{padding:20px;font-size:14px}
+
+.hidden{display:none!important}
+
+@media(max-width:370px){
+ .brand h2{font-size:15px}
+ .logo{width:65px;height:65px}
+ .quick{gap:5px}
+ .quick-item{border-radius:16px}
+ .manage-item{gap:5px;padding:10px 6px}
+ .manage-item strong{font-size:11px}
+}
+</style>
 </head>
 
 <body>
 
-<div class="container">
+<div class="app">
 
-  <!-- КИРИШ ОЙНАСИ -->
+<!-- АВТОРИЗАЦИЯ -->
 
-  <div id="loginScreen">
+<div id="loginScreen">
+<h2>CHJB POULTRY MANAGER</h2>
+<p>Паррандачилик бошқарув тизими</p>
+<div id="status">Авторизация текширилмоқда...</div>
+</div>
 
-    <div class="header">
-      <h2>CHJB POULTRY MANAGER</h2>
-      <p>Паррандачилик бошқарув тизими</p>
-    </div>
+<!-- БОШ САҲИФА -->
 
-    <div class="card">
-      <div id="status">
-        Telegram маълумотлари текширилмоқда...
-      </div>
-    </div>
+<div id="homePage" class="page">
 
-  </div>
+<div class="header">
+
+<img src="chjb-logo.png" class="logo" alt="CHJB Logo">
+
+<div class="brand">
+<h2>CHJB POULTRY MANAGER</h2>
+<p>Паррандачилик бошқарув тизими</p>
+</div>
+
+<button class="icon-button" onclick="showNotifications()">♧</button>
+
+</div>
+
+<div class="hero">
+
+<div class="hero-title">Жами паррандалар</div>
+
+<div class="hero-number" id="totalBirds">
+0 <span style="font-size:24px">бош</span>
+</div>
+
+<div class="hero-bottom">
+<span>▱ Барча цехлар бўйича</span>
+<button class="detail-btn" onclick="openPage('sectionsPage')">
+Тафсилот ›
+</button>
+</div>
+
+</div>
+
+<button class="workshop" onclick="openPage('workshopPage')">
+<div class="workshop-icon">🏭</div>
+<div class="workshop-info">
+<strong>Цехларни бошқариш</strong>
+<p>10 та цех бўйича маълумотлар</p>
+</div>
+<span class="arrow">›</span>
+</button>
+
+<div class="section-heading">⚡ Тезкор амаллар</div>
+
+<div class="quick">
+
+<button class="quick-item" onclick="openModule('income')">
+<span class="emoji">📦</span>
+<span>Кирим</span>
+</button>
+
+<button class="quick-item" onclick="openModule('movement')">
+<span class="emoji">↔️</span>
+<span>Кўчириш</span>
+</button>
+
+<button class="quick-item" onclick="openModule('eggs')">
+<span class="emoji">🥚</span>
+<span>Тухум</span>
+</button>
+
+<button class="quick-item" onclick="openModule('sales')">
+<span class="emoji">🛒</span>
+<span>Сотув</span>
+</button>
+
+</div>
+
+<div class="section-heading">▦ Бошқарув бўлимлари</div>
+
+<div class="management">
+
+<button class="manage-item" onclick="openModule('birds')">
+<span class="emoji">🐔</span>
+<strong>Паррандалар</strong>
+<span class="arrow">›</span>
+</button>
+
+<button class="manage-item" onclick="openModule('mortality')">
+<span class="emoji">💀</span>
+<strong>Нобуд бўлиш</strong>
+<span class="arrow">›</span>
+</button>
+
+<button class="manage-item" onclick="openModule('weight')">
+<span class="emoji">⚖️</span>
+<strong>Вазн ва привес</strong>
+<span class="arrow">›</span>
+</button>
+
+<button class="manage-item" onclick="openModule('feed')">
+<span class="emoji">🌾</span>
+<strong>Ем-хашак</strong>
+<span class="arrow">›</span>
+</button>
+
+<button class="manage-item" onclick="openModule('vaccine')">
+<span class="emoji">💉</span>
+<strong>Вакцинация</strong>
+<span class="arrow">›</span>
+</button>
+
+<button class="manage-item" onclick="openPage('reportsPage')">
+<span class="emoji">📊</span>
+<strong>Ҳисоботлар</strong>
+<span class="arrow">›</span>
+</button>
+
+</div>
+</div>
 
 
-  <!-- АСОСИЙ БОШҚАРУВ МЕНЮСИ -->
+<!-- БЎЛИМЛАР -->
 
-  <div id="mainScreen" class="hidden">
+<div id="sectionsPage" class="page">
 
-    <div class="header">
-      <h2>CHJB POULTRY MANAGER</h2>
-      <p>Асосий бошқарув панели</p>
+<div class="page-title">Бошқарув бўлимлари</div>
 
-      <div class="user-info" id="userInfo">
-        Фойдаланувчи
-      </div>
-    </div>
-
-    <div class="menu">
-
-      <button class="menu-item" onclick="openSection('birds')">
-        <span class="emoji">🐔</span>
-        Паррандалар ҳисоби
-      </button>
-
-      <button class="menu-item" onclick="openSection('income')">
-        <span class="emoji">📥</span>
-        Парранда кирими
-      </button>
-
-      <button class="menu-item" onclick="openSection('movement')">
-        <span class="emoji">🔄</span>
-        Кўчириш
-      </button>
-
-      <button class="menu-item" onclick="openSection('transfer')">
-        <span class="emoji">🐣</span>
-        Парранда турини ўзгартириш
-      </button>
-
-      <button class="menu-item" onclick="openSection('mortality')">
-        <span class="emoji">⚰️</span>
-        Нобуд бўлиш
-      </button>
-
-      <button class="menu-item" onclick="openSection('slaughter')">
-        <span class="emoji">🔪</span>
-        Сўйиш
-      </button>
-
-      <button class="menu-item" onclick="openSection('sales')">
-        <span class="emoji">🛒</span>
-        Реализация
-      </button>
-
-      <button class="menu-item" onclick="openSection('weight')">
-        <span class="emoji">⚖️</span>
-        Вазн ва привес
-      </button>
-
-      <button class="menu-item" onclick="openSection('eggs')">
-        <span class="emoji">🥚</span>
-        Тухум ҳисоби
-      </button>
-
-      <button class="menu-item" onclick="openSection('feed')">
-        <span class="emoji">🌾</span>
-        Ем-хашак
-      </button>
-
-      <button class="menu-item" onclick="openSection('vaccine')">
-        <span class="emoji">💉</span>
-        Вакцинация
-      </button>
-
-      <button class="menu-item" onclick="openSection('reports')">
-        <span class="emoji">📊</span>
-        Ҳисоботлар
-      </button>
-
-    </div>
-
-    <div class="footer">
-      CHJB POULTRY MANAGER © 2026
-    </div>
-
-  </div>
-
-
-  <!-- БЎЛИМЛАРНИНГ ИШ ОЙНАСИ -->
-
-  <div id="sectionScreen" class="hidden">
-
-    <div class="header">
-      <h2 id="sectionName">Бўлим</h2>
-      <p>CHJB POULTRY MANAGER</p>
-    </div>
-
-    <div class="card">
-
-      <div class="section-title">
-        <h3 id="sectionHeading"></h3>
-        <p id="sectionDescription">
-          Ушбу бўлимнинг ишлаш жараёни кейинги босқичда яратилади.
-        </p>
-      </div>
-
-      <button class="back-btn" onclick="backToMenu()">
-        ← Асосий менюга қайтиш
-      </button>
-
-    </div>
-
-  </div>
+<div class="management" id="allModules"></div>
 
 </div>
 
 
-<!-- GOOGLE APPS SCRIPT POST -->
+<!-- ЦЕХЛАР -->
 
-<iframe
-  name="chjbAuthFrame"
-  id="chjbAuthFrame"
-  style="display:none">
-</iframe>
+<div id="workshopPage" class="page">
 
-<form
-  id="authForm"
-  method="POST"
-  target="chjbAuthFrame"
-  action="https://script.google.com/macros/s/AKfycbxI1OBSF1AVEx3lFcwf7C2iO_ahHuLJ85LRFhWQiR2NoUdxKv8iN1jEHw7TyYsZt9hK/exec">
+<div class="page-title">Цехларни бошқариш</div>
 
-  <input
-    type="hidden"
-    name="initData"
-    id="initData">
+<div class="panel">
+<h3>10 та цех</h3>
+<p>Цехлар рўйхати Google Sheets билан улангандан кейин юкланади.</p>
+</div>
+
+</div>
+
+
+<!-- ҲИСОБОТЛАР -->
+
+<div id="reportsPage" class="page">
+
+<div class="page-title">Ҳисоботлар</div>
+
+<div class="panel">
+<h3>Паррандачилик ҳисоботлари</h3>
+<p>Умумий поголовье</p>
+<p>Кирим ва чиқим</p>
+<p>Нобуд бўлиш</p>
+<p>Тухум ва реализация</p>
+<p>Ем-хашак сарфи</p>
+</div>
+
+</div>
+
+
+<!-- СОЗЛАМАЛАР -->
+
+<div id="settingsPage" class="page">
+
+<div class="page-title">Созламалар</div>
+
+<div class="panel">
+<h3>CHJB POULTRY MANAGER</h3>
+<p>Фойдаланувчи: <span id="userName">Telegram</span></p>
+<p>Цехлар сони: 10</p>
+<p>Тизим версияси: 1.0</p>
+</div>
+
+</div>
+
+
+<!-- МОДУЛЬ -->
+
+<div id="modulePage" class="page">
+
+<div class="page-title" id="moduleTitle">Бўлим</div>
+
+<div class="panel">
+<h3 id="moduleHeading"></h3>
+<p id="moduleDescription">
+Ушбу бўлимнинг маълумотлари кейинги босқичда Google Sheets билан боғланади.
+</p>
+</div>
+
+<button class="back" onclick="openPage('homePage')">
+← Бош саҳифа
+</button>
+
+</div>
+
+</div>
+
+
+<!-- ПАСТКИ МЕНЮ -->
+
+<div class="bottom-nav hidden" id="bottomNav">
+
+<button class="nav-item active" data-page="homePage"
+onclick="openPage('homePage')">
+<span class="nav-icon">⌂</span>
+Бош саҳифа
+</button>
+
+<button class="nav-item" data-page="sectionsPage"
+onclick="openPage('sectionsPage')">
+<span class="nav-icon">▦</span>
+Бўлимлар
+</button>
+
+<button class="nav-item" data-page="reportsPage"
+onclick="openPage('reportsPage')">
+<span class="nav-icon">▥</span>
+Ҳисобот
+</button>
+
+<button class="nav-item" data-page="settingsPage"
+onclick="openPage('settingsPage')">
+<span class="nav-icon">⚙</span>
+Созламалар
+</button>
+
+</div>
+
+
+<!-- GOOGLE APPS SCRIPT -->
+
+<iframe name="chjbAuthFrame" id="chjbAuthFrame"
+style="display:none"></iframe>
+
+<form id="authForm" method="POST"
+target="chjbAuthFrame"
+action="https://script.google.com/macros/s/AKfycbxI1OBSF1AVEx3lFcwf7C2iO_ahHuLJ85LRFhWQiR2NoUdxKv8iN1jEHw7TyYsZt9hK/exec">
+
+<input type="hidden" name="initData" id="initData">
 
 </form>
 
 
 <script>
 
-  const statusBox = document.getElementById("status");
+const modules = {
+ birds:"Паррандалар ҳисоби",
+ income:"Парранда кирими",
+ movement:"Паррандаларни кўчириш",
+ transfer:"Парранда турини ўзгартириш",
+ mortality:"Нобуд бўлиш ҳисоби",
+ slaughter:"Сўйиш ҳисоби",
+ sales:"Реализация",
+ weight:"Вазн ва привес",
+ eggs:"Тухум ҳисоби",
+ feed:"Ем-хашак ҳисоби",
+ vaccine:"Вакцинация",
+ reports:"Ҳисоботлар"
+};
 
-  const loginScreen = document.getElementById("loginScreen");
-  const mainScreen = document.getElementById("mainScreen");
-  const sectionScreen = document.getElementById("sectionScreen");
+const descriptions = {
+ birds:"Цехлар бўйича паррандалар сони ва ҳолатини ҳисобга олиш.",
+ income:"Етказиб берувчидан парранда қабул қилиш.",
+ movement:"Паррандаларни бир цехдан бошқа цехга ўтказиш.",
+ transfer:"Парранда турини ўзгартириш.",
+ mortality:"Нобуд бўлган паррандаларни ҳисобга олиш.",
+ slaughter:"Сўйилган паррандалар ҳисоби.",
+ sales:"Парранда ва маҳсулотлар реализацияси.",
+ weight:"Паррандалар вазни ва кунлик привес назорати.",
+ eggs:"Тухум ишлаб чиқариш ва саралаш ҳисоби.",
+ feed:"Ем тайёрлаш ва сарфини ҳисобга олиш.",
+ vaccine:"Эмлаш ва ветеринария тадбирлари.",
+ reports:"Корхона бўйича умумий ҳисоботлар."
+};
 
-  let authCompleted = false;
-  let authStarted = false;
+let authCompleted = false;
 
 
-  // СТАТУС
+// БАРЧА БЎЛИМЛАРНИ ЯРАТИШ
 
-  function showStatus(message) {
-    statusBox.textContent = message;
-  }
+function buildModules(){
 
+ const container = document.getElementById("allModules");
 
-  // АСОСИЙ МЕНЮНИ ОЧИШ
+ Object.keys(modules).forEach(key=>{
 
-  function showMainMenu(result) {
+   const button = document.createElement("button");
+   button.className="manage-item";
 
-    loginScreen.classList.add("hidden");
-    sectionScreen.classList.add("hidden");
-    mainScreen.classList.remove("hidden");
+   const icon = {
+     birds:"🐔",income:"📦",movement:"↔️",
+     transfer:"🐣",mortality:"💀",slaughter:"🔪",
+     sales:"🛒",weight:"⚖️",eggs:"🥚",
+     feed:"🌾",vaccine:"💉",reports:"📊"
+   }[key];
 
-    const tg = window.Telegram.WebApp;
+   button.innerHTML =
+     '<span class="emoji">'+icon+'</span>'+
+     '<strong>'+modules[key]+'</strong>'+
+     '<span class="arrow">›</span>';
 
-    const firstName = tg.initDataUnsafe?.user?.first_name || "";
-    const lastName = tg.initDataUnsafe?.user?.last_name || "";
+   button.onclick=()=>openModule(key);
 
-    const fullName = (firstName + " " + lastName).trim();
+   container.appendChild(button);
 
-    document.getElementById("userInfo").textContent =
-      fullName ? "Хуш келибсиз, " + fullName : "Авторизация тасдиқланди";
+ });
 
-    if (tg.HapticFeedback) {
-      tg.HapticFeedback.notificationOccurred("success");
-    }
+}
 
-  }
 
+// САҲИФА ОЧИШ
 
-  // БЎЛИМНИ ОЧИШ
+function openPage(pageId){
 
-  const sections = {
+ document.querySelectorAll(".page").forEach(page=>{
+   page.classList.remove("active");
+ });
 
-    birds: "Паррандалар ҳисоби",
-    income: "Парранда кирими",
-    movement: "Паррандаларни кўчириш",
-    transfer: "Парранда турини ўзгартириш",
-    mortality: "Нобуд бўлиш ҳисоби",
-    slaughter: "Сўйиш ҳисоби",
-    sales: "Реализация",
-    weight: "Вазн ва привес",
-    eggs: "Тухум ҳисоби",
-    feed: "Ем-хашак ҳисоби",
-    vaccine: "Вакцинация",
-    reports: "Ҳисоботлар"
+ const page=document.getElementById(pageId);
 
-  };
+ if(page) page.classList.add("active");
 
+ document.querySelectorAll(".nav-item").forEach(item=>{
+   item.classList.toggle("active",item.dataset.page===pageId);
+ });
 
-  function openSection(sectionId) {
+}
 
-    const name = sections[sectionId];
 
-    if (!name) return;
+// МОДУЛЬ ОЧИШ
 
-    mainScreen.classList.add("hidden");
-    sectionScreen.classList.remove("hidden");
+function openModule(key){
 
-    document.getElementById("sectionName").textContent = name;
-    document.getElementById("sectionHeading").textContent = name;
+ document.getElementById("moduleTitle").textContent=modules[key];
+ document.getElementById("moduleHeading").textContent=modules[key];
+ document.getElementById("moduleDescription").textContent=
+   descriptions[key] || "Маълумотлар тайёрланмоқда.";
 
-    if (window.Telegram?.WebApp?.HapticFeedback) {
-      Telegram.WebApp.HapticFeedback.selectionChanged();
-    }
+ openPage("modulePage");
 
-  }
+}
 
 
-  // МЕНЮГА ҚАЙТИШ
+// БОШ САҲИФА
 
-  function backToMenu() {
+function showMainMenu(){
 
-    sectionScreen.classList.add("hidden");
-    mainScreen.classList.remove("hidden");
+ document.getElementById("loginScreen").classList.add("hidden");
+ document.getElementById("bottomNav").classList.remove("hidden");
 
-  }
+ openPage("homePage");
 
+ const tg=window.Telegram?.WebApp;
 
-  // GOOGLE СЕРВЕРДАН ЖАВОБ
+ const user=tg?.initDataUnsafe?.user;
 
-  window.addEventListener("message", function(event) {
+ if(user){
+   document.getElementById("userName").textContent=
+     [user.first_name,user.last_name].filter(Boolean).join(" ");
+ }
 
-    let hostname;
+}
 
-    try {
-      hostname = new URL(event.origin).hostname;
-    } catch (e) {
-      return;
-    }
 
-    if (
-      hostname !== "googleusercontent.com" &&
-      !hostname.endsWith(".googleusercontent.com")
-    ) {
-      return;
-    }
+// ХАБАРЛАР
 
-    if (!event.data || event.data.type !== "CHJB_AUTH_RESULT") {
-      return;
-    }
+function showNotifications(){
 
-    const result = event.data.data;
+ alert("Ҳозирча янги хабарлар йўқ.");
 
-    if (result && result.ok === true) {
+}
 
-      authCompleted = true;
 
-      showMainMenu(result);
+// GOOGLE СЕРВЕР ЖАВОБИ
 
-    } else {
+window.addEventListener("message",function(event){
 
-      authCompleted = true;
+ let hostname;
 
-      showStatus(
-        "Авторизация амалга ошмади. Илтимос, қайта уриниб кўринг."
-      );
+ try{
+   hostname=new URL(event.origin).hostname;
+ }catch(e){return;}
 
-    }
+ if(
+   hostname!=="googleusercontent.com" &&
+   !hostname.endsWith(".googleusercontent.com")
+ ){
+   return;
+ }
 
-  });
+ if(event.source!==document.getElementById("chjbAuthFrame").contentWindow){
+   return;
+ }
 
+ if(!event.data || event.data.type!=="CHJB_AUTH_RESULT"){
+   return;
+ }
 
-  // TELEGRAM АВТОРИЗАЦИЯСИ
+ const result=event.data.data;
 
-  window.addEventListener("load", function() {
+ if(result && result.ok===true){
 
-    const tg = window.Telegram && window.Telegram.WebApp;
+   authCompleted=true;
+   showMainMenu();
 
-    if (!tg) {
-      showStatus("Telegram иловасини очишда хатолик юз берди.");
-      return;
-    }
+ }else{
 
-    tg.ready();
-    tg.expand();
+   authCompleted=true;
 
-    const initData = tg.initData || "";
+   document.getElementById("status").textContent=
+     "Авторизация амалга ошмади. Бот орқали қайта киринг.";
 
-    if (!initData) {
+ }
 
-      showStatus(
-        "Telegram маълумоти топилмади. Илтимос, бот орқали очинг."
-      );
+});
 
-      return;
 
-    }
+// TELEGRAM АВТОРИЗАЦИЯСИ
 
-    document.getElementById("initData").value = initData;
+window.addEventListener("load",function(){
 
-    showStatus("Авторизация текширилмоқда...");
+ const tg=window.Telegram?.WebApp;
 
-    authStarted = true;
+ if(!tg){
+   document.getElementById("status").textContent=
+     "Илтимос, иловани Telegram бот орқали очинг.";
+   return;
+ }
 
-    const authFrame = document.getElementById("chjbAuthFrame");
-    const form = document.getElementById("authForm");
+ tg.ready();
+ tg.expand();
 
-    form.submit();
+ const initData=tg.initData || "";
 
-    // ХАВФСИЗ ХАТОЛИК ХАБАРИ
+ if(!initData){
+   document.getElementById("status").textContent=
+     "Telegram маълумоти топилмади.";
+   return;
+ }
 
-    setTimeout(function() {
+ document.getElementById("initData").value=initData;
 
-      if (authStarted && !authCompleted) {
+ buildModules();
 
-        showStatus(
-          "Сервер билан боғланишда хатолик. Илтимос, қайта уриниб кўринг."
-        );
+ document.getElementById("status").textContent=
+   "Авторизация текширилмоқда...";
 
-      }
+ document.getElementById("authForm").submit();
 
-    }, 20000);
+ setTimeout(function(){
 
-  });
+   if(!authCompleted){
+
+     document.getElementById("status").textContent=
+       "Сервер билан боғланишда хатолик. Қайта уриниб кўринг.";
+
+   }
+
+ },20000);
+
+});
 
 </script>
 
