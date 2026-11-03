@@ -91,6 +91,8 @@ button{font-family:inherit;cursor:pointer}
  font-size:65px;
  font-weight:800;
  margin:8px 0;
+ position:relative;
+ z-index:1;
 }
 
 .hero-bottom{
@@ -313,6 +315,61 @@ input{
 
 .hidden{display:none!important}
 
+/* GOOGLE SHEETS ЦЕХ КАРТОЧКАЛАРИ */
+
+.workshop-card{
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ gap:12px;
+ background:white;
+ border-radius:20px;
+ padding:17px;
+ margin-bottom:10px;
+ box-shadow:0 5px 15px #557bb51c;
+}
+
+.workshop-card-info{
+ display:flex;
+ align-items:center;
+ gap:12px;
+}
+
+.workshop-card-icon{
+ width:48px;
+ height:48px;
+ display:grid;
+ place-items:center;
+ background:#e4f1ff;
+ border-radius:15px;
+ font-size:25px;
+}
+
+.workshop-card-name{
+ font-weight:bold;
+ font-size:15px;
+}
+
+.workshop-card-id{
+ font-size:11px;
+ color:#8295b5;
+ margin-top:5px;
+}
+
+.workshop-card-count{
+ font-size:17px;
+ font-weight:bold;
+ color:#0875ef;
+ text-align:right;
+ white-space:nowrap;
+}
+
+#dashboardStatus{
+ color:#647c9f;
+ font-size:13px;
+ padding:10px 5px;
+}
+
 @media(max-width:370px){
  .brand h2{font-size:15px}
  .logo{width:65px;height:65px}
@@ -320,6 +377,9 @@ input{
  .quick-item{border-radius:16px}
  .manage-item{gap:5px;padding:10px 6px}
  .manage-item strong{font-size:11px}
+ .workshop-card{padding:12px}
+ .workshop-card-name{font-size:13px}
+ .workshop-card-count{font-size:14px}
 }
 </style>
 </head>
@@ -359,7 +419,8 @@ input{
   <div class="hero-title">Жами паррандалар</div>
 
   <div class="hero-number" id="totalBirds">
-   0 <span style="font-size:24px">бош</span>
+   <span id="totalBirdsValue">0</span>
+   <span style="font-size:24px">бош</span>
   </div>
 
   <div class="hero-bottom">
@@ -375,7 +436,7 @@ input{
   <div class="workshop-icon">🏭</div>
   <div class="workshop-info">
    <strong>Цехларни бошқариш</strong>
-   <p>10 та цех бўйича маълумотлар</p>
+   <p id="workshopCountText">Цехлар маълумоти юкланмоқда...</p>
   </div>
   <span class="arrow">›</span>
  </button>
@@ -467,10 +528,13 @@ input{
 
  <div class="page-title">Цехларни бошқариш</div>
 
- <div class="panel">
-  <h3>10 та цех</h3>
-  <p>Цехлар рўйхати Google Sheets билан улангандан кейин юкланади.</p>
+ <div id="workshopList">
+  <div class="panel">
+   <p>Цехлар маълумоти юкланмоқда...</p>
+  </div>
  </div>
+
+ <div id="dashboardStatus"></div>
 
 </div>
 
@@ -502,7 +566,7 @@ input{
  <div class="panel">
   <h3>CHJB POULTRY MANAGER</h3>
   <p>Фойдаланувчи: <span id="userName">Telegram</span></p>
-  <p>Цехлар сони: 10</p>
+  <p>Цехлар сони: <span id="settingsWorkshopCount">0</span></p>
   <p>Тизим версияси: 1.0</p>
  </div>
 
@@ -576,7 +640,8 @@ input{
  target="chjbAuthFrame"
  action="https://script.google.com/macros/s/AKfycbxI1OBSF1AVEx3lFcwf7C2iO_ahHuLJ85LRFhWQiR2NoUdxKv8iN1jEHw7TyYsZt9hK/exec">
 
- <input type="hidden" name="initData" id="initData">
+ <input type="hidden" name="action" id="authAction" value="AUTH">
+ <input type="hidden" name="initData" id="initData" value="">
 
 </form>
 
@@ -618,6 +683,8 @@ const descriptions = {
 };
 
 let authCompleted = false;
+let dashboardRequested = false;
+let dashboardCompleted = false;
 
 
 // =====================================
@@ -721,12 +788,13 @@ function showMainMenu(){
  openPage("homePage");
 
  const tg = window.Telegram && window.Telegram.WebApp;
- const user = tg && tg.initDataUnsafe && tg.initDataUnsafe.user;
+ const telegramUser = tg && tg.initDataUnsafe && tg.initDataUnsafe.user;
 
- if(user){
+ if(telegramUser){
 
   document.getElementById("userName").textContent =
-   [user.first_name,user.last_name].filter(Boolean).join(" ");
+   [telegramUser.first_name,telegramUser.last_name]
+   .filter(Boolean).join(" ");
 
  }
 
@@ -745,41 +813,185 @@ function showNotifications(){
 
 
 // =====================================
-// 7. GOOGLE APPS SCRIPT ЖАВОБИ
+// 7. DASHBOARD МАЪЛУМОТЛАРИНИ СЎРАШ
+// =====================================
+
+function requestDashboard(){
+
+ if(dashboardRequested) return;
+
+ dashboardRequested = true;
+
+ const form = document.getElementById("authForm");
+
+ document.getElementById("authAction").value = "DASHBOARD";
+
+ document.getElementById("dashboardStatus").textContent =
+  "Google Sheets маълумотлари юкланмоқда...";
+
+ form.submit();
+
+ setTimeout(function(){
+
+  if(!dashboardCompleted){
+
+   document.getElementById("dashboardStatus").textContent =
+    "Сервердан dashboard жавоби келмади. Google Apps Script кодини ва deployment версиясини текширинг.";
+
+  }
+
+ },20000);
+
+}
+
+
+// =====================================
+// 8. DASHBOARD МАЪЛУМОТЛАРИНИ ЭКРАНГА ЧИҚАРИШ
+// =====================================
+
+function renderDashboard(data){
+
+ const total = Number(data.totalBirds || 0);
+
+ document.getElementById("totalBirdsValue").textContent =
+  total.toLocaleString("uz-UZ");
+
+ const workshops = Array.isArray(data.workshops)
+  ? data.workshops
+  : [];
+
+ document.getElementById("workshopCountText").textContent =
+  workshops.length + " та цех бўйича маълумот";
+
+ document.getElementById("settingsWorkshopCount").textContent =
+  workshops.length;
+
+ const list = document.getElementById("workshopList");
+
+ list.innerHTML = "";
+
+ if(workshops.length === 0){
+
+  list.innerHTML =
+   '<div class="panel">Цехлар рўйхати топилмади. WORKSHOPS жадвалини текширинг.</div>';
+
+ }else{
+
+  workshops.forEach(function(workshop){
+
+   const card = document.createElement("div");
+   card.className = "workshop-card";
+
+   const info = document.createElement("div");
+   info.className = "workshop-card-info";
+
+   const icon = document.createElement("div");
+   icon.className = "workshop-card-icon";
+   icon.textContent = "🏭";
+
+   const nameBox = document.createElement("div");
+
+   const name = document.createElement("div");
+   name.className = "workshop-card-name";
+   name.textContent = workshop.workshopName || "Цех";
+
+   const id = document.createElement("div");
+   id.className = "workshop-card-id";
+   id.textContent = workshop.workshopId || "";
+
+   nameBox.appendChild(name);
+   nameBox.appendChild(id);
+
+   info.appendChild(icon);
+   info.appendChild(nameBox);
+
+   const count = document.createElement("div");
+   count.className = "workshop-card-count";
+
+   count.textContent =
+    Number(workshop.birds || 0).toLocaleString("uz-UZ") +
+    " бош";
+
+   card.appendChild(info);
+   card.appendChild(count);
+
+   list.appendChild(card);
+
+  });
+
+ }
+
+ document.getElementById("dashboardStatus").textContent =
+  "Маълумотлар муваффақиятли юкланди.";
+
+}
+
+
+// =====================================
+// 9. GOOGLE APPS SCRIPT ЖАВОБИ
 // =====================================
 
 window.addEventListener("message", function(event){
 
- // Google Apps Script жавобини қабул қилиш
  if(typeof event.origin !== "string" ||
     !event.origin.endsWith(".googleusercontent.com")){
   return;
  }
 
- if(!event.data ||
-    event.data.type !== "CHJB_AUTH_RESULT"){
+ const message = event.data;
+
+ if(!message || !message.type){
   return;
  }
 
- const result = event.data.data;
+ // АВТОРИЗАЦИЯ ЖАВОБИ
 
- authCompleted = true;
+ if(message.type === "CHJB_AUTH_RESULT"){
 
- if(result && result.ok === true){
+  const result = message.data || {};
 
-  window.chjbUser = result.user || {};
+  authCompleted = true;
 
-  document.getElementById("status").textContent =
-   "Авторизация муваффақиятли!";
+  if(result.ok === true){
 
-  showMainMenu();
+   window.chjbUser = result.user || {};
 
- }else{
+   document.getElementById("status").textContent =
+    "Авторизация муваффақиятли!";
 
-  document.getElementById("status").textContent =
-   result && result.message
-    ? result.message
-    : "Авторизация амалга ошмади.";
+   showMainMenu();
+
+   // Авторизациядан кейин dashboard маълумотларини олиш
+   requestDashboard();
+
+  }else{
+
+   document.getElementById("status").textContent =
+    result.message || "Авторизация амалга ошмади.";
+
+  }
+
+ }
+
+
+ // DASHBOARD ЖАВОБИ
+
+ if(message.type === "CHJB_DASHBOARD_RESULT"){
+
+  dashboardCompleted = true;
+
+  const result = message.data || {};
+
+  if(result.ok === true){
+
+   renderDashboard(result.data || {});
+
+  }else{
+
+   document.getElementById("dashboardStatus").textContent =
+    result.message || "Dashboard маълумотларини олишда хатолик.";
+
+  }
 
  }
 
@@ -787,7 +999,7 @@ window.addEventListener("message", function(event){
 
 
 // =====================================
-// 8. TELEGRAM АВТОРИЗАЦИЯСИ
+// 10. TELEGRAM АВТОРИЗАЦИЯСИ
 // =====================================
 
 window.addEventListener("load", function(){
@@ -824,15 +1036,15 @@ window.addEventListener("load", function(){
 
  document.getElementById("initData").value = initData;
 
+ document.getElementById("authAction").value = "AUTH";
+
  const form = document.getElementById("authForm");
 
- // Google Apps Script серверига POST юбориш
  form.submit();
 
  status.textContent =
   "Авторизация текширилмоқда...";
 
- // 20 сонияда жавоб келмаса, хатоликни кўрсатиш
  setTimeout(function(){
 
   if(!authCompleted){
@@ -848,7 +1060,7 @@ window.addEventListener("load", function(){
 
 
 // =====================================
-// 9. САҲИФАНИ ИШГА ТУШИРИШ
+// 11. САҲИФАНИ ИШГА ТУШИРИШ
 // =====================================
 
 buildModules();
