@@ -305,7 +305,11 @@ input{
  text-align:center;
 }
 
-#status{padding:20px;font-size:14px}
+#status{
+ padding:20px;
+ font-size:14px;
+ line-height:1.5;
+}
 
 .hidden{display:none!important}
 
@@ -327,121 +331,122 @@ input{
 <!-- АВТОРИЗАЦИЯ -->
 
 <div id="loginScreen">
-<h2>CHJB POULTRY MANAGER</h2>
-<p>Паррандачилик бошқарув тизими</p>
-<div id="status">Авторизация текширилмоқда...</div>
+ <h2>CHJB POULTRY MANAGER</h2>
+ <p>Паррандачилик бошқарув тизими</p>
+ <div id="status">Авторизация текширилмоқда...</div>
 </div>
+
 
 <!-- БОШ САҲИФА -->
 
 <div id="homePage" class="page">
 
-<div class="header">
+ <div class="header">
 
-<img src="chjb-logo.png" class="logo" alt="CHJB Logo">
+  <img src="chjb-logo.png" class="logo" alt="CHJB Logo">
 
-<div class="brand">
-<h2>CHJB POULTRY MANAGER</h2>
-<p>Паррандачилик бошқарув тизими</p>
-</div>
+  <div class="brand">
+   <h2>CHJB POULTRY MANAGER</h2>
+   <p>Паррандачилик бошқарув тизими</p>
+  </div>
 
-<button class="icon-button" onclick="showNotifications()">♧</button>
+  <button class="icon-button" onclick="showNotifications()">♧</button>
 
-</div>
+ </div>
 
-<div class="hero">
+ <div class="hero">
 
-<div class="hero-title">Жами паррандалар</div>
+  <div class="hero-title">Жами паррандалар</div>
 
-<div class="hero-number" id="totalBirds">
-0 <span style="font-size:24px">бош</span>
-</div>
+  <div class="hero-number" id="totalBirds">
+   0 <span style="font-size:24px">бош</span>
+  </div>
 
-<div class="hero-bottom">
-<span>▱ Барча цехлар бўйича</span>
-<button class="detail-btn" onclick="openPage('sectionsPage')">
-Тафсилот ›
-</button>
-</div>
+  <div class="hero-bottom">
+   <span>▱ Барча цехлар бўйича</span>
+   <button class="detail-btn" onclick="openPage('sectionsPage')">
+    Тафсилот ›
+   </button>
+  </div>
 
-</div>
+ </div>
 
-<button class="workshop" onclick="openPage('workshopPage')">
-<div class="workshop-icon">🏭</div>
-<div class="workshop-info">
-<strong>Цехларни бошқариш</strong>
-<p>10 та цех бўйича маълумотлар</p>
-</div>
-<span class="arrow">›</span>
-</button>
+ <button class="workshop" onclick="openPage('workshopPage')">
+  <div class="workshop-icon">🏭</div>
+  <div class="workshop-info">
+   <strong>Цехларни бошқариш</strong>
+   <p>10 та цех бўйича маълумотлар</p>
+  </div>
+  <span class="arrow">›</span>
+ </button>
 
-<div class="section-heading">⚡ Тезкор амаллар</div>
+ <div class="section-heading">⚡ Тезкор амаллар</div>
 
-<div class="quick">
+ <div class="quick">
 
-<button class="quick-item" onclick="openModule('income')">
-<span class="emoji">📦</span>
-<span>Кирим</span>
-</button>
+  <button class="quick-item" onclick="openModule('income')">
+   <span class="emoji">📦</span>
+   <span>Кирим</span>
+  </button>
 
-<button class="quick-item" onclick="openModule('movement')">
-<span class="emoji">↔️</span>
-<span>Кўчириш</span>
-</button>
+  <button class="quick-item" onclick="openModule('movement')">
+   <span class="emoji">↔️</span>
+   <span>Кўчириш</span>
+  </button>
 
-<button class="quick-item" onclick="openModule('eggs')">
-<span class="emoji">🥚</span>
-<span>Тухум</span>
-</button>
+  <button class="quick-item" onclick="openModule('eggs')">
+   <span class="emoji">🥚</span>
+   <span>Тухум</span>
+  </button>
 
-<button class="quick-item" onclick="openModule('sales')">
-<span class="emoji">🛒</span>
-<span>Сотув</span>
-</button>
+  <button class="quick-item" onclick="openModule('sales')">
+   <span class="emoji">🛒</span>
+   <span>Сотув</span>
+  </button>
 
-</div>
+ </div>
 
-<div class="section-heading">▦ Бошқарув бўлимлари</div>
+ <div class="section-heading">▦ Бошқарув бўлимлари</div>
 
-<div class="management">
+ <div class="management">
 
-<button class="manage-item" onclick="openModule('birds')">
-<span class="emoji">🐔</span>
-<strong>Паррандалар</strong>
-<span class="arrow">›</span>
-</button>
+  <button class="manage-item" onclick="openModule('birds')">
+   <span class="emoji">🐔</span>
+   <strong>Паррандалар</strong>
+   <span class="arrow">›</span>
+  </button>
 
-<button class="manage-item" onclick="openModule('mortality')">
-<span class="emoji">💀</span>
-<strong>Нобуд бўлиш</strong>
-<span class="arrow">›</span>
-</button>
+  <button class="manage-item" onclick="openModule('mortality')">
+   <span class="emoji">💀</span>
+   <strong>Нобуд бўлиш</strong>
+   <span class="arrow">›</span>
+  </button>
 
-<button class="manage-item" onclick="openModule('weight')">
-<span class="emoji">⚖️</span>
-<strong>Вазн ва привес</strong>
-<span class="arrow">›</span>
-</button>
+  <button class="manage-item" onclick="openModule('weight')">
+   <span class="emoji">⚖️</span>
+   <strong>Вазн ва привес</strong>
+   <span class="arrow">›</span>
+  </button>
 
-<button class="manage-item" onclick="openModule('feed')">
-<span class="emoji">🌾</span>
-<strong>Ем-хашак</strong>
-<span class="arrow">›</span>
-</button>
+  <button class="manage-item" onclick="openModule('feed')">
+   <span class="emoji">🌾</span>
+   <strong>Ем-хашак</strong>
+   <span class="arrow">›</span>
+  </button>
 
-<button class="manage-item" onclick="openModule('vaccine')">
-<span class="emoji">💉</span>
-<strong>Вакцинация</strong>
-<span class="arrow">›</span>
-</button>
+  <button class="manage-item" onclick="openModule('vaccine')">
+   <span class="emoji">💉</span>
+   <strong>Вакцинация</strong>
+   <span class="arrow">›</span>
+  </button>
 
-<button class="manage-item" onclick="openPage('reportsPage')">
-<span class="emoji">📊</span>
-<strong>Ҳисоботлар</strong>
-<span class="arrow">›</span>
-</button>
+  <button class="manage-item" onclick="openPage('reportsPage')">
+   <span class="emoji">📊</span>
+   <strong>Ҳисоботлар</strong>
+   <span class="arrow">›</span>
+  </button>
 
-</div>
+ </div>
 </div>
 
 
@@ -449,9 +454,9 @@ input{
 
 <div id="sectionsPage" class="page">
 
-<div class="page-title">Бошқарув бўлимлари</div>
+ <div class="page-title">Бошқарув бўлимлари</div>
 
-<div class="management" id="allModules"></div>
+ <div class="management" id="allModules"></div>
 
 </div>
 
@@ -460,12 +465,12 @@ input{
 
 <div id="workshopPage" class="page">
 
-<div class="page-title">Цехларни бошқариш</div>
+ <div class="page-title">Цехларни бошқариш</div>
 
-<div class="panel">
-<h3>10 та цех</h3>
-<p>Цехлар рўйхати Google Sheets билан улангандан кейин юкланади.</p>
-</div>
+ <div class="panel">
+  <h3>10 та цех</h3>
+  <p>Цехлар рўйхати Google Sheets билан улангандан кейин юкланади.</p>
+ </div>
 
 </div>
 
@@ -474,16 +479,16 @@ input{
 
 <div id="reportsPage" class="page">
 
-<div class="page-title">Ҳисоботлар</div>
+ <div class="page-title">Ҳисоботлар</div>
 
-<div class="panel">
-<h3>Паррандачилик ҳисоботлари</h3>
-<p>Умумий поголовье</p>
-<p>Кирим ва чиқим</p>
-<p>Нобуд бўлиш</p>
-<p>Тухум ва реализация</p>
-<p>Ем-хашак сарфи</p>
-</div>
+ <div class="panel">
+  <h3>Паррандачилик ҳисоботлари</h3>
+  <p>Умумий поголовье</p>
+  <p>Кирим ва чиқим</p>
+  <p>Нобуд бўлиш</p>
+  <p>Тухум ва реализация</p>
+  <p>Ем-хашак сарфи</p>
+ </div>
 
 </div>
 
@@ -492,14 +497,14 @@ input{
 
 <div id="settingsPage" class="page">
 
-<div class="page-title">Созламалар</div>
+ <div class="page-title">Созламалар</div>
 
-<div class="panel">
-<h3>CHJB POULTRY MANAGER</h3>
-<p>Фойдаланувчи: <span id="userName">Telegram</span></p>
-<p>Цехлар сони: 10</p>
-<p>Тизим версияси: 1.0</p>
-</div>
+ <div class="panel">
+  <h3>CHJB POULTRY MANAGER</h3>
+  <p>Фойдаланувчи: <span id="userName">Telegram</span></p>
+  <p>Цехлар сони: 10</p>
+  <p>Тизим версияси: 1.0</p>
+ </div>
 
 </div>
 
@@ -508,18 +513,18 @@ input{
 
 <div id="modulePage" class="page">
 
-<div class="page-title" id="moduleTitle">Бўлим</div>
+ <div class="page-title" id="moduleTitle">Бўлим</div>
 
-<div class="panel">
-<h3 id="moduleHeading"></h3>
-<p id="moduleDescription">
-Ушбу бўлимнинг маълумотлари кейинги босқичда Google Sheets билан боғланади.
-</p>
-</div>
+ <div class="panel">
+  <h3 id="moduleHeading"></h3>
+  <p id="moduleDescription">
+   Ушбу бўлимнинг маълумотлари кейинги босқичда Google Sheets билан боғланади.
+  </p>
+ </div>
 
-<button class="back" onclick="openPage('homePage')">
-← Бош саҳифа
-</button>
+ <button class="back" onclick="openPage('homePage')">
+  ← Бош саҳифа
+ </button>
 
 </div>
 
@@ -530,48 +535,57 @@ input{
 
 <div class="bottom-nav hidden" id="bottomNav">
 
-<button class="nav-item active" data-page="homePage"
-onclick="openPage('homePage')">
-<span class="nav-icon">⌂</span>
-Бош саҳифа
-</button>
+ <button class="nav-item active" data-page="homePage"
+ onclick="openPage('homePage')">
+  <span class="nav-icon">⌂</span>
+  Бош саҳифа
+ </button>
 
-<button class="nav-item" data-page="sectionsPage"
-onclick="openPage('sectionsPage')">
-<span class="nav-icon">▦</span>
-Бўлимлар
-</button>
+ <button class="nav-item" data-page="sectionsPage"
+ onclick="openPage('sectionsPage')">
+  <span class="nav-icon">▦</span>
+  Бўлимлар
+ </button>
 
-<button class="nav-item" data-page="reportsPage"
-onclick="openPage('reportsPage')">
-<span class="nav-icon">▥</span>
-Ҳисобот
-</button>
+ <button class="nav-item" data-page="reportsPage"
+ onclick="openPage('reportsPage')">
+  <span class="nav-icon">▥</span>
+  Ҳисобот
+ </button>
 
-<button class="nav-item" data-page="settingsPage"
-onclick="openPage('settingsPage')">
-<span class="nav-icon">⚙</span>
-Созламалар
-</button>
+ <button class="nav-item" data-page="settingsPage"
+ onclick="openPage('settingsPage')">
+  <span class="nav-icon">⚙</span>
+  Созламалар
+ </button>
 
 </div>
 
 
 <!-- GOOGLE APPS SCRIPT -->
 
-<iframe name="chjbAuthFrame" id="chjbAuthFrame"
-style="display:none"></iframe>
+<iframe
+ name="chjbAuthFrame"
+ id="chjbAuthFrame"
+ style="display:none">
+</iframe>
 
-<form id="authForm" method="POST"
-target="chjbAuthFrame"
-action="https://script.google.com/macros/s/AKfycbxI1OBSF1AVEx3lFcwf7C2iO_ahHuLJ85LRFhWQiR2NoUdxKv8iN1jEHw7TyYsZt9hK/exec">
+<form
+ id="authForm"
+ method="POST"
+ target="chjbAuthFrame"
+ action="https://script.google.com/macros/s/AKfycbxI1OBSF1AVEx3lFcwf7C2iO_ahHuLJ85LRFhWQiR2NoUdxKv8iN1jEHw7TyYsZt9hK/exec">
 
-<input type="hidden" name="initData" id="initData">
+ <input type="hidden" name="initData" id="initData">
 
 </form>
 
 
 <script>
+
+// =====================================
+// 1. МОДУЛЛАР
+// =====================================
 
 const modules = {
  birds:"Паррандалар ҳисоби",
@@ -606,7 +620,9 @@ const descriptions = {
 let authCompleted = false;
 
 
-// БАРЧА БЎЛИМЛАРНИ ЯРАТИШ
+// =====================================
+// 2. БАРЧА БЎЛИМЛАРНИ ЯРАТИШ
+// =====================================
 
 function buildModules(){
 
@@ -614,85 +630,112 @@ function buildModules(){
 
  Object.keys(modules).forEach(key=>{
 
-   const button = document.createElement("button");
-   button.className="manage-item";
+  const button = document.createElement("button");
+  button.className = "manage-item";
 
-   const icon = {
-     birds:"🐔",income:"📦",movement:"↔️",
-     transfer:"🐣",mortality:"💀",slaughter:"🔪",
-     sales:"🛒",weight:"⚖️",eggs:"🥚",
-     feed:"🌾",vaccine:"💉",reports:"📊"
-   }[key];
+  const icons = {
+   birds:"🐔",
+   income:"📦",
+   movement:"↔️",
+   transfer:"🐣",
+   mortality:"💀",
+   slaughter:"🔪",
+   sales:"🛒",
+   weight:"⚖️",
+   eggs:"🥚",
+   feed:"🌾",
+   vaccine:"💉",
+   reports:"📊"
+  };
 
-   button.innerHTML =
-     '<span class="emoji">'+icon+'</span>'+
-     '<strong>'+modules[key]+'</strong>'+
-     '<span class="arrow">›</span>';
+  button.innerHTML =
+   '<span class="emoji">'+icons[key]+'</span>'+
+   '<strong>'+modules[key]+'</strong>'+
+   '<span class="arrow">›</span>';
 
-   button.onclick=()=>openModule(key);
+  button.onclick = ()=>openModule(key);
 
-   container.appendChild(button);
+  container.appendChild(button);
 
  });
 
 }
 
 
-// САҲИФА ОЧИШ
+// =====================================
+// 3. САҲИФА ОЧИШ
+// =====================================
 
 function openPage(pageId){
 
  document.querySelectorAll(".page").forEach(page=>{
-   page.classList.remove("active");
+  page.classList.remove("active");
  });
 
- const page=document.getElementById(pageId);
+ const page = document.getElementById(pageId);
 
- if(page) page.classList.add("active");
+ if(page){
+  page.classList.add("active");
+ }
 
  document.querySelectorAll(".nav-item").forEach(item=>{
-   item.classList.toggle("active",item.dataset.page===pageId);
+  item.classList.toggle(
+   "active",
+   item.dataset.page === pageId
+  );
  });
 
 }
 
 
-// МОДУЛЬ ОЧИШ
+// =====================================
+// 4. МОДУЛЬ ОЧИШ
+// =====================================
 
 function openModule(key){
 
- document.getElementById("moduleTitle").textContent=modules[key];
- document.getElementById("moduleHeading").textContent=modules[key];
- document.getElementById("moduleDescription").textContent=
-   descriptions[key] || "Маълумотлар тайёрланмоқда.";
+ document.getElementById("moduleTitle").textContent =
+  modules[key] || "Бўлим";
+
+ document.getElementById("moduleHeading").textContent =
+  modules[key] || "Бўлим";
+
+ document.getElementById("moduleDescription").textContent =
+  descriptions[key] || "Маълумотлар тайёрланмоқда.";
 
  openPage("modulePage");
 
 }
 
 
-// БОШ САҲИФА
+// =====================================
+// 5. БОШ САҲИФАНИ КЎРСАТИШ
+// =====================================
 
 function showMainMenu(){
 
  document.getElementById("loginScreen").classList.add("hidden");
+
  document.getElementById("bottomNav").classList.remove("hidden");
 
  openPage("homePage");
 
- const tg=window.Telegram?.WebApp;
-
- const user=tg?.initDataUnsafe?.user;
+ const tg = window.Telegram && window.Telegram.WebApp;
+ const user = tg && tg.initDataUnsafe && tg.initDataUnsafe.user;
 
  if(user){
-   document.getElementById("userName").textContent=
-     [user.first_name,user.last_name].filter(Boolean).join(" ");
+
+  document.getElementById("userName").textContent =
+   [user.first_name,user.last_name].filter(Boolean).join(" ");
+
  }
 
 }
 
 
-// ХАБАРЛАР
+// =====================================
+// 6. ХАБАРЛАР
+// =====================================
 
 function showNotifications(){
 
@@ -701,89 +744,115 @@ function showNotifications(){
 }
 
 
-// GOOGLE APPS SCRIPT ЖАВОБИ
+// =====================================
+// 7. GOOGLE APPS SCRIPT ЖАВОБИ
+// =====================================
 
-window.addEventListener("message", function(event) {
+window.addEventListener("message", function(event){
 
-  // Фақат Google Apps Script серверидан келган хабар
-  if (!event.origin.endsWith(".googleusercontent.com")) {
-    return;
-  }
+ // Google Apps Script жавобини қабул қилиш
+ if(typeof event.origin !== "string" ||
+    !event.origin.endsWith(".googleusercontent.com")){
+  return;
+ }
 
-  if (!event.data || event.data.type !== "CHJB_AUTH_RESULT") {
-    return;
-  }
+ if(!event.data ||
+    event.data.type !== "CHJB_AUTH_RESULT"){
+  return;
+ }
 
-  const result = event.data.data;
+ const result = event.data.data;
 
-  authCompleted = true;
+ authCompleted = true;
 
-  if (result && result.ok === true) {
+ if(result && result.ok === true){
 
-    window.chjbUser = result.user;
+  window.chjbUser = result.user || {};
 
-    document.getElementById("status").textContent =
-      "Авторизация муваффақиятли!";
+  document.getElementById("status").textContent =
+   "Авторизация муваффақиятли!";
 
-    showMainMenu();
+  showMainMenu();
 
-  } else {
+ }else{
 
-    document.getElementById("status").textContent =
-      result && result.message
-        ? result.message
-        : "Авторизация амалга ошмади.";
+  document.getElementById("status").textContent =
+   result && result.message
+    ? result.message
+    : "Авторизация амалга ошмади.";
 
-  }
+ }
 
 });
 
 
-// TELEGRAM АВТОРИЗАЦИЯСИНИ БОШЛАШ
+// =====================================
+// 8. TELEGRAM АВТОРИЗАЦИЯСИ
+// =====================================
 
-window.addEventListener("load", function() {
+window.addEventListener("load", function(){
 
-  const tg = window.Telegram && window.Telegram.WebApp;
+ const status = document.getElementById("status");
 
-  if (!tg) {
-    document.getElementById("status").textContent =
-      "Telegram WebApp аниқланмади. Илтимос, бот орқали киринг.";
-    return;
+ const tg = window.Telegram && window.Telegram.WebApp;
+
+ if(!tg){
+
+  status.textContent =
+   "Telegram WebApp аниқланмади. Илтимос, бот орқали киринг.";
+
+  return;
+
+ }
+
+ tg.ready();
+ tg.expand();
+
+ const initData = tg.initData || "";
+
+ if(!initData){
+
+  status.textContent =
+   "Telegram авторизация маълумоти топилмади. Бот орқали қайта киринг.";
+
+  return;
+
+ }
+
+ status.textContent =
+  "Telegram маълумотлари серверга юборилмоқда...";
+
+ document.getElementById("initData").value = initData;
+
+ const form = document.getElementById("authForm");
+
+ // Google Apps Script серверига POST юбориш
+ form.submit();
+
+ status.textContent =
+  "Авторизация текширилмоқда...";
+
+ // 20 сонияда жавоб келмаса, хатоликни кўрсатиш
+ setTimeout(function(){
+
+  if(!authCompleted){
+
+   status.textContent =
+    "Сервердан жавоб келмади. Google Apps Script уланишини текширинг.";
+
   }
 
-  tg.ready();
-  tg.expand();
-
-  const initData = tg.initData || "";
-
-  if (!initData) {
-    document.getElementById("status").textContent =
-      "Telegram авторизация маълумоти топилмади. Бот орқали қайта киринг.";
-    return;
-  }
-
-  document.getElementById("status").textContent =
-    "Telegram маълумотлари серверга юборилмоқда...";
-
-  document.getElementById("initData").value = initData;
-
-  const form = document.getElementById("authForm");
-
-  form.submit();
-
-  document.getElementById("status").textContent =
-    "Авторизация текширилмоқда...";
-
-  setTimeout(function() {
-
-    if (!authCompleted) {
-      document.getElementById("status").textContent =
-        "Сервердан жавоб келмади. Google Apps Script ва интернет уланишини текширинг.";
-    }
-
-  }, 20000);
+ },20000);
 
 });
+
+
+// =====================================
+// 9. САҲИФАНИ ИШГА ТУШИРИШ
+// =====================================
+
+buildModules();
+
 </script>
 
 </body>
