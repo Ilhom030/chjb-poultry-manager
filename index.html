@@ -701,64 +701,11 @@ function showNotifications(){
 }
 
 
-// GOOGLE СЕРВЕР ЖАВОБИ
-
-
-window.addEventListener("message", function(event) {
-
-  // Google серверларидан келган хабарларни қабул қилиш
-  let origin = "";
-
-  try {
-    origin = new URL(event.origin).hostname;
-  } catch(e) {
-    return;
-  }
-
-  const isGoogle =
-    origin === "script.google.com" ||
-    origin === "googleusercontent.com" ||
-    origin.endsWith(".googleusercontent.com");
-
-  if (!isGoogle) return;
-
-  if (!event.data ||
-      event.data.type !== "CHJB_AUTH_RESULT") {
-    return;
-  }
-
-  const result = event.data.data;
-
-  if (result && result.ok === true) {
-
-    authCompleted = true;
-
-    // Фойдаланувчи маълумотларини сақлаш
-    window.chjbUser = result.user;
-
-    showMainMenu();
-
-  } else {
-
-    authCompleted = true;
-
-    document.getElementById("status").textContent =
-      result && result.message
-      ? result.message
-      : "Авторизация амалга ошмади.";
-
-  }
-
-});
-
-
-// TELEGRAM АВТОРИЗАЦИЯСИ
-
-
 // GOOGLE APPS SCRIPT ЖАВОБИ
 
 window.addEventListener("message", function(event) {
 
+  // Фақат Google Apps Script серверидан келган хабар
   if (!event.origin.endsWith(".googleusercontent.com")) {
     return;
   }
@@ -769,23 +716,74 @@ window.addEventListener("message", function(event) {
 
   const result = event.data.data;
 
+  authCompleted = true;
+
   if (result && result.ok === true) {
 
-    authCompleted = true;
+    window.chjbUser = result.user;
+
+    document.getElementById("status").textContent =
+      "Авторизация муваффақиятли!";
 
     showMainMenu();
 
   } else {
 
-    authCompleted = true;
-
     document.getElementById("status").textContent =
-      "Авторизация амалга ошмади. Бот орқали қайта киринг.";
+      result && result.message
+        ? result.message
+        : "Авторизация амалга ошмади.";
 
   }
 
 });
 
+
+// TELEGRAM АВТОРИЗАЦИЯСИНИ БОШЛАШ
+
+window.addEventListener("load", function() {
+
+  const tg = window.Telegram && window.Telegram.WebApp;
+
+  if (!tg) {
+    document.getElementById("status").textContent =
+      "Telegram WebApp аниқланмади. Илтимос, бот орқали киринг.";
+    return;
+  }
+
+  tg.ready();
+  tg.expand();
+
+  const initData = tg.initData || "";
+
+  if (!initData) {
+    document.getElementById("status").textContent =
+      "Telegram авторизация маълумоти топилмади. Бот орқали қайта киринг.";
+    return;
+  }
+
+  document.getElementById("status").textContent =
+    "Telegram маълумотлари серверга юборилмоқда...";
+
+  document.getElementById("initData").value = initData;
+
+  const form = document.getElementById("authForm");
+
+  form.submit();
+
+  document.getElementById("status").textContent =
+    "Авторизация текширилмоқда...";
+
+  setTimeout(function() {
+
+    if (!authCompleted) {
+      document.getElementById("status").textContent =
+        "Сервердан жавоб келмади. Google Apps Script ва интернет уланишини текширинг.";
+    }
+
+  }, 20000);
+
+});
 </script>
 
 </body>
