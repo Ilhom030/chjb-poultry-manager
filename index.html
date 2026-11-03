@@ -747,46 +747,35 @@ window.addEventListener("message",function(event){
 
 // TELEGRAM АВТОРИЗАЦИЯСИ
 
-window.addEventListener("load",function(){
 
- const tg=window.Telegram?.WebApp;
+// GOOGLE APPS SCRIPT ЖАВОБИ
 
- if(!tg){
-   document.getElementById("status").textContent=
-     "Илтимос, иловани Telegram бот орқали очинг.";
-   return;
- }
+window.addEventListener("message", function(event) {
 
- tg.ready();
- tg.expand();
+  if (!event.origin.endsWith(".googleusercontent.com")) {
+    return;
+  }
 
- const initData=tg.initData || "";
+  if (!event.data || event.data.type !== "CHJB_AUTH_RESULT") {
+    return;
+  }
 
- if(!initData){
-   document.getElementById("status").textContent=
-     "Telegram маълумоти топилмади.";
-   return;
- }
+  const result = event.data.data;
 
- document.getElementById("initData").value=initData;
+  if (result && result.ok === true) {
 
- buildModules();
+    authCompleted = true;
 
- document.getElementById("status").textContent=
-   "Авторизация текширилмоқда...";
+    showMainMenu();
 
- document.getElementById("authForm").submit();
+  } else {
 
- setTimeout(function(){
+    authCompleted = true;
 
-   if(!authCompleted){
+    document.getElementById("status").textContent =
+      "Авторизация амалга ошмади. Бот орқали қайта киринг.";
 
-     document.getElementById("status").textContent=
-       "Сервер билан боғланишда хатолик. Қайта уриниб кўринг.";
-
-   }
-
- },20000);
+  }
 
 });
 
