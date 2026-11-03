@@ -33,7 +33,34 @@ const descriptions={birds:"Цехлар бўйича паррандалар со
 let authCompleted=false,dashboardRequested=false,dashboardCompleted=false,currentWorkshopId="",currentWorkshopData=null;
 function buildModules(){const c=document.getElementById("allModules"),icons={birds:"🐔",income:"📦",movement:"↔️",transfer:"🐣",mortality:"💀",slaughter:"🔪",sales:"🛒",weight:"⚖️",eggs:"🥚",feed:"🌾",vaccine:"💉",reports:"📊"};Object.keys(modules).forEach(k=>{const b=document.createElement("button");b.className="manage-item";b.innerHTML='<span class="emoji">'+icons[k]+'</span><strong>'+modules[k]+'</strong><span class="arrow">›</span>';b.onclick=()=>openModule(k);c.appendChild(b);});}
 function openPage(id){document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));const p=document.getElementById(id);if(p)p.classList.add("active");document.querySelectorAll(".nav-item").forEach(n=>n.classList.toggle("active",n.dataset.page===id));}
-function openModule(k){document.getElementById("moduleTitle").textContent=modules[k]||"Бўлим";document.getElementById("moduleHeading").textContent=modules[k]||"Бўлим";document.getElementById("moduleDescription").textContent=descriptions[k]||"Маълумотлар тайёрланмоқда.";openPage("modulePage");}
+function openModule(key) {
+
+  if (key === "income") {
+    if (window.currentWorkshopId) {
+      openWorkshopDetail(window.currentWorkshopId);
+      setTimeout(showBirdInForm, 300);
+      return;
+    }
+
+    openPage("workshopPage");
+
+    document.getElementById("dashboardStatus").textContent =
+      "Кирим қилиш учун аввал цехни танланг.";
+
+    return;
+  }
+
+  document.getElementById("moduleTitle").textContent =
+    modules[key] || "Бўлим";
+
+  document.getElementById("moduleHeading").textContent =
+    modules[key] || "Бўлим";
+
+  document.getElementById("moduleDescription").textContent =
+    descriptions[key] || "Маълумотлар тайёрланмоқда.";
+
+  openPage("modulePage");
+}
 function showMainMenu(){document.getElementById("loginScreen").classList.add("hidden");document.getElementById("bottomNav").classList.remove("hidden");openPage("homePage");const u=window.Telegram?.WebApp?.initDataUnsafe?.user;if(u)document.getElementById("userName").textContent=[u.first_name,u.last_name].filter(Boolean).join(" ");}
 function showNotifications(){alert("Ҳозирча янги хабарлар йўқ.");}
 function requestDashboard(){if(dashboardRequested)return;dashboardRequested=true;document.getElementById("authAction").value="DASHBOARD";document.getElementById("dashboardStatus").textContent="Google Sheets маълумотлари юкланмоқда...";document.getElementById("authForm").submit();setTimeout(()=>{if(!dashboardCompleted)document.getElementById("dashboardStatus").textContent="Сервердан жавоб келмади. Deployment версиясини текширинг.";},20000);}
