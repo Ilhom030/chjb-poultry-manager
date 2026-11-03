@@ -524,6 +524,72 @@ input{
 
 <!-- ЦЕХЛАР -->
 
+<!-- ЦЕХ АЛОҲИДА ОЙНАСИ -->
+
+<div id="workshopDetailPage" class="page">
+
+  <div class="page-title" id="detailWorkshopName">
+    Цех маълумотлари
+  </div>
+
+  <div class="hero">
+    <div class="hero-title">Жорий паррандалар қолдиғи</div>
+
+    <div class="hero-number">
+      <span id="detailBalance">0</span>
+      <span style="font-size:24px">бош</span>
+    </div>
+
+    <div class="hero-bottom">
+      <span>Цехдаги жами паррандалар</span>
+    </div>
+  </div>
+
+  <div class="section-heading">📊 Паррандалар ҳаракати</div>
+
+  <div class="management">
+
+    <div class="panel">
+      <div>📦 Жами кирим</div>
+      <h2 id="detailIncoming">0</h2>
+    </div>
+
+    <div class="panel">
+      <div>↘️ Бошқа цехдан</div>
+      <h2 id="detailMovesIn">0</h2>
+    </div>
+
+    <div class="panel">
+      <div>↗️ Бошқа цехга</div>
+      <h2 id="detailMovesOut">0</h2>
+    </div>
+
+    <div class="panel">
+      <div>💀 Нобуд бўлган</div>
+      <h2 id="detailMortality">0</h2>
+    </div>
+
+    <div class="panel">
+      <div>🔪 Сўйилган</div>
+      <h2 id="detailSlaughter">0</h2>
+    </div>
+
+  </div>
+
+  <div class="section-heading">📋 Охирги операциялар</div>
+
+  <div id="workshopOperations">
+    <div class="panel">Маълумотлар юкланмоқда...</div>
+  </div>
+
+  <div id="workshopDetailStatus"></div>
+
+  <button class="back" onclick="openPage('workshopPage')">
+    ← Цехлар рўйхати
+  </button>
+
+</div>
+
 <div id="workshopPage" class="page">
 
  <div class="page-title">Цехларни бошқариш</div>
@@ -642,6 +708,7 @@ input{
 
  <input type="hidden" name="action" id="authAction" value="AUTH">
  <input type="hidden" name="initData" id="initData" value="">
+ <input type="hidden" name="workshopId" id="requestWorkshopId" value="">
 
 </form>
 
@@ -846,6 +913,130 @@ function requestDashboard(){
 
 
 // =====================================
+// ЦЕХ АЛОҲИДА МАЪЛУМОТЛАРИНИ СЎРАШ
+// =====================================
+
+function openWorkshopDetail(workshopId) {
+
+  if (!workshopId) {
+    alert("Цех ID топилмади.");
+    return;
+  }
+
+  document.getElementById("requestWorkshopId").value = workshopId;
+
+  document.getElementById("detailWorkshopName").textContent =
+    "Цех маълумотлари";
+
+  document.getElementById("workshopDetailStatus").textContent =
+    "Маълумотлар Google Sheets'дан юкланмоқда...";
+
+  document.getElementById("workshopOperations").innerHTML =
+    '<div class="panel">Маълумотлар юкланмоқда...</div>';
+
+  openPage("workshopDetailPage");
+
+  document.getElementById("authAction").value = "WORKSHOP_DETAIL";
+
+  document.getElementById("authForm").submit();
+}
+
+
+// =====================================
+// ЦЕХ МАЪЛУМОТЛАРИНИ ЭКРАНГА ЧИҚАРИШ
+// =====================================
+
+function renderWorkshopDetail(data) {
+
+  function numberFormat(value) {
+    return Number(value || 0).toLocaleString("uz-UZ");
+  }
+
+  document.getElementById("detailWorkshopName").textContent =
+    data.workshopName || "Цех";
+
+  document.getElementById("detailBalance").textContent =
+    numberFormat(data.balance);
+
+  document.getElementById("detailIncoming").textContent =
+    numberFormat(data.incoming);
+
+  document.getElementById("detailMovesIn").textContent =
+    numberFormat(data.movesIn);
+
+  document.getElementById("detailMovesOut").textContent =
+    numberFormat(data.movesOut);
+
+  document.getElementById("detailMortality").textContent =
+    numberFormat(data.mortality);
+
+  document.getElementById("detailSlaughter").textContent =
+    numberFormat(data.slaughter);
+
+  const container = document.getElementById("workshopOperations");
+
+  container.innerHTML = "";
+
+  const operations = Array.isArray(data.operations)
+    ? data.operations
+    : [];
+
+  if (operations.length === 0) {
+
+    container.innerHTML =
+      '<div class="panel">Ҳозирча операциялар мавжуд эмас.</div>';
+
+  } else {
+
+    operations.forEach(function(item) {
+
+      const panel = document.createElement("div");
+      panel.className = "panel";
+
+      const title = document.createElement("strong");
+      title.textContent = item.type || "Операция";
+
+      const date = document.createElement("div");
+      date.style.color = "#7189b3";
+      date.style.fontSize = "12px";
+      date.style.marginTop = "7px";
+      date.textContent = item.date || "";
+
+      const quantity = document.createElement("div");
+      quantity.style.fontSize = "19px";
+      quantity.style.fontWeight = "bold";
+      quantity.style.marginTop = "8px";
+
+      const qty = Number(item.quantity || 0);
+
+      quantity.textContent =
+        (qty > 0 ? "+" : "") + numberFormat(qty) + " бош";
+
+      const comment = document.createElement("div");
+      comment.style.fontSize = "12px";
+      comment.style.color = "#7189b3";
+      comment.style.marginTop = "6px";
+      comment.textContent = item.comment || "";
+
+      panel.appendChild(title);
+      panel.appendChild(date);
+      panel.appendChild(quantity);
+      panel.appendChild(comment);
+
+      container.appendChild(panel);
+
+    });
+
+  }
+
+  document.getElementById("workshopDetailStatus").textContent =
+    "Цех маълумотлари янгиланди.";
+
+}
+
+
+
+// =====================================
 // 8. DASHBOARD МАЪЛУМОТЛАРИНИ ЭКРАНГА ЧИҚАРИШ
 // =====================================
 
@@ -881,6 +1072,12 @@ function renderDashboard(data){
 
    const card = document.createElement("div");
    card.className = "workshop-card";
+
+    card.style.cursor = "pointer";
+ 
+    card.onclick = function() {
+      openWorkshopDetail(workshop.workshopId);
+    };
 
    const info = document.createElement("div");
    info.className = "workshop-card-info";
@@ -994,7 +1191,25 @@ window.addEventListener("message", function(event){
   }
 
  }
+ 
+// ЦЕХ АЛОҲИДА МАЪЛУМОТЛАРИ ЖАВОБИ
 
+if (message.type === "CHJB_WORKSHOP_DETAIL_RESULT") {
+
+  const result = message.data || {};
+
+  if (result.ok === true) {
+
+    renderWorkshopDetail(result.data || {});
+
+  } else {
+
+    document.getElementById("workshopDetailStatus").textContent =
+      result.message || "Цех маълумотларини юклашда хатолик.";
+
+  }
+
+}
 });
 
 
