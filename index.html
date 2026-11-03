@@ -703,44 +703,51 @@ function showNotifications(){
 
 // GOOGLE СЕРВЕР ЖАВОБИ
 
-window.addEventListener("message",function(event){
 
- let hostname;
+window.addEventListener("message", function(event) {
 
- try{
-   hostname=new URL(event.origin).hostname;
- }catch(e){return;}
+  // Google серверларидан келган хабарларни қабул қилиш
+  let origin = "";
 
- if(
-   hostname!=="googleusercontent.com" &&
-   !hostname.endsWith(".googleusercontent.com")
- ){
-   return;
- }
+  try {
+    origin = new URL(event.origin).hostname;
+  } catch(e) {
+    return;
+  }
 
- if(event.source!==document.getElementById("chjbAuthFrame").contentWindow){
-   return;
- }
+  const isGoogle =
+    origin === "script.google.com" ||
+    origin === "googleusercontent.com" ||
+    origin.endsWith(".googleusercontent.com");
 
- if(!event.data || event.data.type!=="CHJB_AUTH_RESULT"){
-   return;
- }
+  if (!isGoogle) return;
 
- const result=event.data.data;
+  if (!event.data ||
+      event.data.type !== "CHJB_AUTH_RESULT") {
+    return;
+  }
 
- if(result && result.ok===true){
+  const result = event.data.data;
 
-   authCompleted=true;
-   showMainMenu();
+  if (result && result.ok === true) {
 
- }else{
+    authCompleted = true;
 
-   authCompleted=true;
+    // Фойдаланувчи маълумотларини сақлаш
+    window.chjbUser = result.user;
 
-   document.getElementById("status").textContent=
-     "Авторизация амалга ошмади. Бот орқали қайта киринг.";
+    showMainMenu();
 
- }
+  } else {
+
+    authCompleted = true;
+
+    document.getElementById("status").textContent =
+      result && result.message
+      ? result.message
+      : "Авторизация амалга ошмади.";
+
+  }
 
 });
 
